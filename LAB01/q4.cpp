@@ -11,8 +11,5 @@ double c = 49;
 cout << "average =" << (a + b + c) / 3 << endl;
 
 return 0;
-
-
-
-  
+ 
 }
