@@ -12,7 +12,7 @@ int time2new = time2 % 12;
 //change to 12-hour format
 cout << "the time" << time1 << ":00" << "changed into 12-hours fromat is = " << time1new << ":00" << endl;
 cout << "the time" << time2 << ":00" << "changed into 12-hours format is = " << time2new << ":00" << endl;
-return 0;
 
+return 0;
 
 }
