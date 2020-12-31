@@ -33,7 +33,7 @@ int main()
    // The game is played between two players until one of two cases occurs:
    // (1) the board is completely filled with pieces from the player, and no winner is determined. 
    // (2) one player wins the game
-   while (!BoardIsFull(gameBoard)&& (CheckWon(gameBoard)=='n'))
+   while (!BoardIsFull(gameBoard) && (CheckWon(gameBoard) == 'n'))
    {
     // Prompt the player to enter the position to play the next move
 
@@ -65,40 +65,56 @@ int main()
    // Display the result of the game
    if (CheckWon(gameBoard) == 'X')
       cout << "Player X wins!" << endl;
-   else if (CheckWon(gameBoard) == 'O')
+      return 0;
+   if (CheckWon(gameBoard) == 'O')
       cout << "Player O wins!" << endl;
-   else
+      return 0;
+   if (CheckWon(gameBoard) != 'X' || CheckWon(gameBoard) != 'O')
       cout << "This is a Draw game!" << endl;
-
-    return 0;
+      return 0;
 }
 
 // This function initializes all the elements of the game board to blank characters ' '
 void InitializeBoard(char gameBoard [][SIZE])
 {
-  char gameBd[3][3]= {{' ', ' ', ' '},{' ', ' ', ' '},{' ', ' ', ' '}};
+  //char gameBd[3][3]= {{' ', ' ', ' '},{' ', ' ', ' '},{' ', ' ', ' '}};
+  for (int i = 0; i< SIZE; i++){
+    for (int j = 0; j< SIZE; j++){
+      gameBoard [i][j] = ' ';
+    }
+  }
 }
 
 // This function displays the game board as a 3 by 3 board
 void Display(char gameBoard[][SIZE])
 {
-  //char gameBd[3][3]= {{' ', ' ', ' '},{' ', ' ', ' '},{' ', ' ', ' '}};
-  cout<<" "<<gameBoard[0][0]<<" | "<<gameBoard[0][1]<<" | "<<gameBoard[0][2]<<" "<<'\n';
-  cout<<"-----------"<<'\n';
-  cout<<" "<<gameBoard[1][0]<<"| "<<gameBoard[1][1]<<"  | "<<gameBoard[1][2]<<" "<<'\n';
-  cout<<"-----------"<<'\n';
+  //char gameBoard[3][3]= {{' ', ' ', ' '},{' ', ' ', ' '},{' ', ' ', ' '}};
+  cout<<" "<<gameBoard[0][0]<<" | "<<gameBoard[0][1]<<"  | "<<gameBoard[0][2]<<" "<<'\n';
+  cout<<"------------"<<'\n';
+  cout<<" "<<gameBoard[1][0]<<" | "<<gameBoard[1][1]<<"  | "<<gameBoard[1][2]<<" "<<'\n';
+  cout<<"------------"<<'\n';
   cout<<" "<<gameBoard[2][0]<<" | "<<gameBoard[2][1]<<"  | "<<gameBoard[2][2]<<" "<<'\n';
 }
 
 // This function checks to see if all the elements of the game board have been filled
 bool BoardIsFull(char gameBoard[][SIZE])
-{
-  if (gameBoard[0][0] != ' ' && gameBoard[0][1] != ' ' && gameBoard[0][2] != ' ' 
-      && gameBoard[1][0] != ' ' && gameBoard[1][1] != ' ' && gameBoard[1][2] != ' ' 
-      && gameBoard[2][0] != ' ' && gameBoard[2][1] != ' ' && gameBoard[2][2] != ' ')
-    return 0; //game over 
-  else
-    return -1; //continue
+{     
+    int flag = 0;
+    for(int i = 0; i < SIZE; i++){
+      for(int j = 0; j < SIZE; j++){
+        if(gameBoard[i][j] != ' '){
+          flag = 1;
+        }
+        else if(gameBoard[i][j] == ' '){
+          flag = 0;
+        } 
+      }
+    }
+    
+    if (flag == 1){
+      return true;
+    }
+    else return false;
 }
 
 // This function assigns character p to location (x, y) on the game board
@@ -107,27 +123,14 @@ bool BoardIsFull(char gameBoard[][SIZE])
 // If the location (x, y) does not have any piece/character, assign p to that location and return true
 bool Assign(char gameBoard[][SIZE], int x, int y, char p)
 {
-  do
-	{
-		cin >> x;
-		cin >> y;
-		if (gameBoard[x][y] == ' ') {
-			gameBoard[x][y] = p;
-			if (p == 'X')
-				p = 'O';
-			else
-				p = 'X';
-		}
-		cout << endl;
-		Display(gameBoard);
-
-	} while (true);
-
-	Display(gameBoard);
-
-	return 0;
-}
-
+ if (gameBoard[x][y] != ' '){ 
+    return false;
+    } 
+else{
+    gameBoard[x][y] = p;
+    return true;
+    } 
+ }
 
 // check to see if the game is over by checking
 // if any row, column or diagonal has the same character
@@ -136,36 +139,53 @@ bool Assign(char gameBoard[][SIZE], int x, int y, char p)
 // otherwise, 'n' is returned.
 char CheckWon(char gameBoard[][SIZE]){
     char won = 'n';
+    int flag = 0;
 
     // write multiway if statement to check whether a win condition is met
     // Case 1: the 3 elements on the i-th row of the array are the same, assign the array element value to variable "won" 
     // Case 2: the 3 elements on the j-th column of the array are the same, assign value to variable "won" 
     // Case 3: the 3 elements on the diagonal of the array are the same, assign value to variable "won"
     // Case 4: the 3 elements of the second diagonal of the array are the same, assign value to variable "won"
-
-    if (gameBoard[0][0] == gameBoard[0][1] && gameBoard[0][1] == gameBoard[0][2])
-
-        return won;
-    else if (gameBoard[1][0] == gameBoard[1][1] && gameBoard[1][1] == gameBoard[1][2])
-
-        return won;
-    else if (gameBoard[2][0] == gameBoard[2][1] && gameBoard[2][1] == gameBoard[2][2])
-
-        return won;
-    else if (gameBoard[0][0] == gameBoard[1][0] && gameBoard[1][0] == gameBoard[2][0])
-
-        return won;
-    else if (gameBoard[0][1] == gameBoard[1][1] && gameBoard[1][1] == gameBoard[2][1])
-
-        return won;
-    else if (gameBoard[0][2] == gameBoard[1][2] && gameBoard[1][2] == gameBoard[2][2])
-
-        return won;
-    else if (gameBoard[0][0] == gameBoard[1][1] && gameBoard[1][1] == gameBoard[2][2])
-
-        return won;
-    else if (gameBoard[0][2] == gameBoard[1][1] && gameBoard[1][1] == gameBoard[2][0])
-
-        
-        return won;
+    
+    if ((gameBoard[0][0] == 'X' && gameBoard[0][1] == 'X' && gameBoard[0][2] == 'X') || (gameBoard[0][0] == 'O' && gameBoard[0][1] == 'O' && gameBoard[0][2] == 'O')){
+      flag = 1;
+      won = gameBoard[0][0];
     }
+
+    else if ((gameBoard[1][0] == 'X' && gameBoard[1][1] == 'X' && gameBoard[1][2] == 'X') || (gameBoard[1][0] == 'O' && gameBoard[1][1] == 'O' && gameBoard[1][2] == 'O')){
+      flag = 1;
+      won = gameBoard[1][0];
+    }
+
+    else if ((gameBoard[2][0] == 'X' && gameBoard[2][1] == 'X' && gameBoard[2][2] == 'X') || (gameBoard[2][0] == 'O' && gameBoard[2][1] == 'O' && gameBoard[2][2] == 'O')){
+      flag = 1;
+      won = gameBoard[2][0];
+    }
+
+    else if ((gameBoard[0][0] == 'X' && gameBoard[1][0] == 'X' && gameBoard[2][0] == 'X') || (gameBoard[0][0] == 'O' && gameBoard[1][0] == 'O' && gameBoard[2][0] == 'O')){
+      flag = 1;
+      won = gameBoard[0][0];
+    }
+
+    else if ((gameBoard[0][1] == 'X' && gameBoard[1][1] == 'X' && gameBoard[2][1] == 'X') || (gameBoard[0][1] == 'O' && gameBoard[1][1] == 'O' && gameBoard[2][1] == 'O')){
+      flag = 1;
+      won = gameBoard[0][1];
+    }
+
+    else if ((gameBoard[0][2] == 'X' && gameBoard[1][2] == 'X' && gameBoard[2][2] == 'X') || (gameBoard[0][2] == 'O' && gameBoard[1][2] == 'O' && gameBoard[2][2] == 'O')){
+      flag = 1;
+      won = gameBoard[0][2];
+    }
+
+    else if ((gameBoard[0][0] == 'X' && gameBoard[1][1] == 'X' && gameBoard[2][2] == 'X') || (gameBoard[0][0] == 'O' && gameBoard[1][1] == 'O' && gameBoard[2][2] == 'O')){
+      flag = 1;
+      won = gameBoard[0][0];
+    }
+
+    else if ((gameBoard[0][2] == 'X' && gameBoard[1][1] == 'X' && gameBoard[2][0] == 'X') || (gameBoard[0][2] == 'O' && gameBoard[1][1] == 'O' && gameBoard[2][0] == 'O')){
+      flag = 1;
+      won = gameBoard[0][2];
+    }
+  
+  return won;
+}
